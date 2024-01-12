@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles/signup.css">
+    <title>Create Account| Doculocker Web Vault</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box" id="box1">
+        <header><p class="heading2">Create Account</p></header>
+      </div>
+      <div class="box" id="box2">
+        <form>
+          <label for="username">Email Address:</label><br />
+          <input type="text" id="username" class="input-box" required /><br />
+          <p class="heading4">You'll use your email address to log in.</p>
+          <br />
+          <label for="name">Name</label><br />
+          <input type="text" id="name" class="input-box" required /><br />
+          <p class="heading4">What should we call you?</p>
+          <br />
+          <label for="password">Master Password:</label><br />
+          <input
+            type="password"
+            id="password"
+            class="input-box"
+            required
+          /><br />
+          <p class="heading4">
+            Important: Your master password cannot be recovered if you forget
+            it! 12 character minimum
+          </p>
+          <br />
+          <hr />
+          <label for="re-password">Re-type Password:</label><br />
+          <input
+            type="password"
+            id="re-password"
+            class="input-box"
+            required
+          /><br />
+          <label for="hint">Password Hint:</label><br />
+          <input type="text" id="hint" class="input-box" required /><br /><br />
+          <input type="checkbox" id="confirm" name="agree-1" /><label
+            >Check known breach for this password.</label
+          ><br /><br />
+          <input type="checkbox" id="confirm" name="agree-2" /><label>
+            By checking this box you agree to the following:<br>        
+            <a href="#">Terms of Service, Privacy Policy</a></label
+          ><br />
+          <button class="btn">Create Account</button>
+          <p class="heading4">
+            Already have an account? <a href="login.html">Log in</a>
+          </p>
+        </form>
+      </div>
+      <div class="box" id="box3">
+        <p class="heading4">&#169 2023 Doculocker Inc.</p>
+        <pre class="heading4">  ver 2023.12.0</pre>
+      </div>
+    </div>
+    <script>
+      window.addEventListener('DOMContentLoaded', (event) => {
+        const form = document.querySelector('form');
+  
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+  
+          const email = document.getElementById('username').value;
+          const name = document.getElementById('name').value;
+          const password = document.getElementById('password').value;
+          const rePassword = document.getElementById('re-password').value;
+          const hint = document.getElementById('hint').value;
+          
+          // Simple front-end validation for password match
+          if(password !== rePassword) {
+            alert("Passwords do not match.");
+            return false;
+          }
+          
+          // Optional: Additional client-side validation...
+          
+          // Build the request payload
+          const payload = {
+            email: email,
+            name: name,
+            password: password,
+            hint: hint
+          };
+          
+          // Send the request to the server
+          fetch('/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+            window.location.href = '/login'; // Redirect to the login page
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

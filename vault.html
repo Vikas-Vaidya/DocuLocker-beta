@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles/base.css" />
+    <link rel="stylesheet" type="text/css" href="styles/vault.css" />
+    <title>Doculocker Web Vault</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="navbar-whole">
+          <div class="navbar-collapse">
+            <ul class="list">
+              <li>
+                <object
+                  data="image-files/main-icon.svg"
+                  width="50px"
+                  height="50px"
+                ></object>
+              </li>
+              <li><a id="nav-links" href="/vault">Vaults</a></li>
+              <li><a id="nav-links" href="/files">File Upload</a></li>
+              <li><a id="nav-links" href="#">Send</a></li>
+              <li><a id="nav-links" href="#">Tools</a></li>
+              <li><a id="nav-links" href="/gen">Generator</a></li>
+            </ul>
+          </div>
+          <div class="nav-button">
+            <button class="logout-btn"><a href="/signup">Logout</a></button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="parent">
+      <div class="div1">
+        <div class="side-nav">
+          <div class="options options-title">
+            <p class="heading3">Vault</p>
+          </div>
+          <div class="options options-item">
+            <a href="#" class="list-group-active">Saved Credentials   <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>
+            <a href="#" class="list-group-item">Files   <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>
+          </div>
+        </div> 
+      </div>
+      <div class="div2">
+        <div class="title-main">ENTER DETAILS</div>
+        <div class="acc-form">
+          <form>
+            <div class="acc-form" id="acc-form-a">
+              <label for="name">Name:</label><br>
+              <input type="text" id="name" class="input-box" required /><br />
+              <label for="folder">Folder:</label><br />
+              <input type="text" id="folder" class="input-box" required /><br />
+            </div>
+            <div class="acc-form" id="acc-form-b">
+              <label for="username">Username: </label><br />
+              <input type="text" id="username" class="input-box" required />
+              <label for="password">Master Password:</label><br />
+              <input type="password" id="password" class="input-box" required /><br />
+            </div>
+            <div class="note">
+              <label for="notes">Notes:</label><br>
+              <textarea id="notes" name="notes" rows="6" cols="50"></textarea>
+            </div>
+            <div class="credentials-save">
+              <button class="btn btn-primary">Save</button><button class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+        </div>
+      </div>
+      </div>
+    <footer>
+      <div class="footer">
+        <p class="heading4">&#169 2023 Doculocker Inc</p>
+        <p class="heading4">ver 2023.12.0</p>
+      </div>
+    </footer>
+    <script>
+      // This function will be called when the save button is clicked
+      async function saveCredentials(event) {
+          event.preventDefault(); // Prevent the form from submitting the traditional way
+
+          // Capture the data from the form
+          const name = document.getElementById('name').value;
+          const folder = document.getElementById('folder').value;
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          const notes = document.getElementById('notes').value;
+
+          // Here's the URL where the server is expecting to receive POST requests.
+          // This URL is just a placeholder and needs to be replaced with your actual endpoint.
+          const url = '/save';
+
+          // Prepare the data to be sent in the post request
+          const data = {
+              name: name,
+              folder: folder,
+              username: username,
+              masterPassword: password,
+              notes: notes
+          };
+
+          try {
+              const response = await fetch(url, {
+                  method: 'POST', // Or 'PUT'
+                  headers: {
+                      'Content-Type': 'application/json',
+                      // if you need to set an authorization header, for example:
+                      // 'Authorization': 'Bearer y0urT0ken'
+                  },
+                  body: JSON.stringify(data)
+              });
+              
+              if (!response.ok) {
+                  throw new Error(`HTTP error: ${response.status}`);
+              }
+
+              const result = await response.json();
+              console.log(result);
+              alert('Credentials saved successfully');
+
+              // Here you might want to redirect the user or clear the form
+          } catch(error) {
+              console.error('Could not save credentials:', error);
+              alert('Failed to save credentials');
+          }
+          displayCredentials()
+      }
+
+      async function displayCredentials() {
+        // Fetch the list of saved credentials from the server
+        const url = '/list';
+
+        try {
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+          }
+
+          const credentialsList = await response.json();
+
+          // Display the credentials in the dropdown section
+          const dropdownSection = document.querySelector('.options-item');
+          dropdownSection.innerHTML = '<a href="#" class="list-group-active">Saved Credentials <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>';
+
+          credentialsList.forEach((credential) => {
+            const credentialLink = document.createElement('a');
+            credentialLink.href = '#';
+            credentialLink.classList.add('list-group-item');
+            credentialLink.textContent = credential.name; // Assuming the credential object has a 'name' property
+
+            dropdownSection.appendChild(credentialLink);
+          });
+        } catch (error) {
+          console.error('Could not fetch credentials list:', error);
+          // Handle the error appropriately (e.g., show an error message to the user)
+        }
+      }
+
+      // Add event listeners once the DOM is fully loaded
+      document.addEventListener('DOMContentLoaded', function() {
+          document.querySelector('.btn-primary').addEventListener('click', saveCredentials);
+          displayCredentials();
+      });
+  </script>
+  </body>
+</html>

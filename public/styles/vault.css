@@ -1,0 +1,117 @@
+.parent {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  width: 100%;
+  margin-top: 40px;
+}
+
+.div1 {
+  /* height: 524.1px; */
+  width: 230px;
+  margin-right: 60px;
+}
+.div2 {
+  /* height: 400px; */
+  margin-left: 30px;
+}
+
+.side-nav {
+  border: 1px solid black;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+.options-title {
+  border-bottom: 1px solid black;
+  width: 100%;
+}
+
+.options-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.options-item a {
+  padding: 5px;
+  border-bottom: 1px solid black;
+}
+
+.options-item a:hover {
+  text-decoration: underline;
+}
+
+.title-main {
+  border-bottom: 1px solid black;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.acc-form {
+  display: flex;
+  flex-direction: row;
+}
+
+#acc-form-a {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+#acc-form-b {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.input-box {
+  width: 350px;
+  height: 30px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+textarea {
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+/* .credentials-save {
+  border: 1px solid black;
+  padding: 10px;
+} */
+
+.btn {
+  height: 35px;
+  width: 60px;
+  border-radius: 3px;
+}
+
+.btn-primary {
+  font-size: 14px;
+  background-color: #175ddc;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.btn-secondary {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.heading1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.heading4 {
+  font-size: 14px;
+}

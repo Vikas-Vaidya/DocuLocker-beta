@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles/base.css" />
+    <link rel="stylesheet" type="text/css" href="styles/password.css" />
+    <title>Doculocker Web Vault</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="navbar-whole">
+          <div class="navbar-collapse">
+            <ul class="list">
+              <li>
+                <object
+                  data="image-files/main-icon.svg"
+                  width="50px"
+                  height="50px"
+                ></object>
+              </li>
+              <li><a id="nav-links" href="vault.html">Vaults</a></li>
+              <li><a id="nav-links" href="file-upload.html">File Upload</a></li>
+              <li><a id="nav-links" href="#">Send</a></li>
+              <li><a id="nav-links" href="#">Tools</a></li>
+              <li><a id="nav-links" href="password-generator.html">Generator</a></li>
+            </ul>
+          </div>
+          <div class="nav-button">
+            <button class="logout-btn"><a href="login.html">Logout</a></button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="parent">
+      <div class="div1">
+        <div class="side-nav">
+          <div class="options options-title">
+            <p class="heading3">TOOLS</p>
+          </div>
+          <div class="options options-item">
+            <a href="" class="list-group-active">GENERATOR</a>
+            <a href="#" class="list-group-item">Export Vault</a>
+          </div>
+        </div> 
+      </div>
+      <div class="div2">
+        <div class="page-header">
+          <p class="heading1">Generator</p>
+        </div>
+        <div class="card-body">
+          <p id="generated-password"></p>
+        </div>
+           <div class="form-group">
+              <p class="heading4">What would you like to generate?</p>
+              <input type="radio" id="type_password" name="type"><label>Password</label><input type="radio" id="type_username" name="type"><label>Username</label>
+           </div>
+           <div class="row">
+            <div class="form-group col-4">
+              <label for="length">Length</label>
+              <input type="number" id="length" class="form-control" min="5" max="128">
+            </div>
+            <div class="form-group col-4">
+              <label for="min-number">Minimum Numbers</label>
+              <input id="min-number" type="number" class="form-control" min="0" max="9">
+            </div>
+            <div class="form-group col-4">
+              <label for="min-special">Minimum Special</label>
+              <input id="min-special" type="number" class="form-control" min="0" max="9">
+            </div>
+          </div>
+            <label class="d-block">Options</label>
+            <div class="form-group">
+              <div class="form-check">
+                <input id="uppercase" type="checkbox" class="" aria-label="Uppercase (A-Z)">
+                <label for="uppercase" class="form-check-label">A-Z</label>
+              </div>
+              <div class="form-check">
+                <input id="lowercase" type="checkbox" class="" aria-label="Lowercase (a-z)">
+                <label for="lowercase" class="form-check-label">a-z</label>
+              </div>
+              <div class="form-check">
+                <input id="numbers" type="checkbox" class="" aria-label="Numbers (0-9)">
+                <label for="numbers" class="form-check-label">0-9</label>
+              </div>
+              <!-- <div class="form-check">
+              <input id="special" type="checkbox" class="" aria-label="Special characters (!@#$%^&amp;*)">
+              <label for="special" class="form-check-label">!@#$%^&amp;*</label>
+              </div> -->
+            </div>
+            <div class="d-flex">
+              <button type="button" id="regenerate-button" class="btn btn-primary">Regenerate password</button>
+              <button type="button" class="btn btn-outline-secondary">Copy password</button>
+            </div>
+           
+      </div>
+      </div>
+    <footer>
+      <div class="footer">
+        <p class="heading4">&#169 2023 Doculocker Inc</p>
+        <p class="heading4">ver 2023.12.0</p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          // Function to generate a random password
+          function generatePassword() {
+              // Define character sets
+              const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+              const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+              const numberChars = '0123456789';
+              const specialChars = '!@#$%^&*';
+
+              // Get user input values
+              const length = document.getElementById('length').value;
+              const minNumber = document.getElementById('min-number').value;
+              const minSpecial = document.getElementById('min-special').value;
+              const includeUppercase = document.getElementById('uppercase').checked;
+              const includeLowercase = document.getElementById('lowercase').checked;
+              const includeNumbers = document.getElementById('numbers').checked;
+
+              // Validate input
+              if (isNaN(length) || isNaN(minNumber) || isNaN(minSpecial)) {
+                  alert('Please enter valid numeric values.');
+                  return;
+              }
+
+              // Ensure at least one option is selected
+              if (!includeUppercase && !includeLowercase && !includeNumbers) {
+                  alert('Please select at least one option.');
+                  return;
+              }
+
+              // Create the character set based on user input
+              let charset = '';
+              if (includeUppercase) charset += uppercaseChars;
+              if (includeLowercase) charset += lowercaseChars;
+              if (includeNumbers) charset += numberChars;
+              if (minSpecial > 0) charset += specialChars;
+
+              // Generate the password
+              let password = '';
+              for (let i = 0; i < length; i++) {
+                  const randomIndex = Math.floor(Math.random() * charset.length);
+                  password += charset[randomIndex];
+              }
+
+              // Display the generated password
+              document.getElementById('generated-password').textContent = password;
+          }
+
+          // Attach event listener to the "Regenerate password" button
+          document.getElementById('regenerate-button').addEventListener('click', generatePassword);
+
+          // Initial password generation on page load
+          generatePassword();
+      });
+  </script>
+  </body>
+</html>

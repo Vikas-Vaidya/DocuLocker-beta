@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles/login.css">
+    <title>Doculocker Web Vault</title>
+  </head>
+  <body><div class="container">
+    <header>
+      <div class="box" id="box1">
+        <object data="image-files/main-icon.svg" width="50" height="50"> </object><p class="heading"><strong>Docu</strong>locker</p><br /><br />
+      </div>
+      <div id="box1-5">
+        <pre class="heading2">
+          Log in or create a new account to access 
+            your secure vault.</pre
+                  >
+      </div>
+    </header>
+    <div class="box" id="box2">
+      <form>
+        <label for="username">Email Address:</label><br />
+        <input type="text" id="username" class="input-box" required /><br />
+        <label for="password">Password:</label><br />
+        <input type="password" id="password" class="input-box" required /><br />
+        <input type="checkbox" id="confirm" value="confirm" /><label
+          for="confirm"
+          >Remember email</label
+        ><br />
+        <button class="btn" type="button" id="login-button">Continue</button>
+        <hr />
+        <p class="heading4">New around here? <a href="/signup">Create account</a></p>
+      </form>
+    </div>
+    <div class="box" id="box3">
+      <p class="heading4">&#169 2023 Doculocker Inc.</p>
+      <pre class="heading4">  ver 2023.12.0</pre>
+    </div>
+  </div>
+  <script>
+    document.getElementById('login-button').addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent the form from submitting the traditional way
+  
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+  
+      // Check if the mandatory fields are not empty (simple validation)
+      if (username && password) {
+        // Construct the request payload
+        var payload = {
+          email: username,
+          password: password
+        };
+  
+        // Make a fetch POST request to the login endpoint
+        fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(function(response) {
+          if (!response.ok) {
+            // If the response status is not 2xx, consider it as a login failure
+            throw new Error('Login failed');
+          }
+          return response.json(); // assuming the server responds with JSON
+        })
+        .then(function(data) {
+          // Handle login success
+          window.location = "/vault"
+          // You may want to redirect the user or update the UI accordingly
+        })
+        .catch(function(error) {
+          // Handle login error
+          window.alert("Wrong Username or Password")
+          // Update the UI to show the login error
+        });
+      } else {
+        // If some fields are empty, alert the user
+        window.alert('Please enter both username and password.');
+      }
+    });
+  </script>
+  </body>
+</html>

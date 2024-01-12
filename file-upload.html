@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles/base.css" />
+    <link rel="stylesheet" type="text/css" href="styles/vault.css" />
+    <link rel="stylesheet" type="text/css" href="styles/file-upload.css" />
+    <title>Doculocker Web Vault</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="navbar-whole">
+          <div class="navbar-collapse">
+            <ul class="list">
+              <li>
+                <object
+                  data="image-files/main-icon.svg"
+                  width="50px"
+                  height="50px"
+                ></object>
+              </li>
+              <li><a id="nav-links" href="/vault">Vaults</a></li>
+              <li><a id="nav-links" href="/files">File Upload</a></li>
+              <li><a id="nav-links" href="#">Send</a></li>
+              <li><a id="nav-links" href="#">Tools</a></li>
+              <li><a id="nav-links" href="/gen">Generator</a></li>
+            </ul>
+          </div>
+          <div class="nav-button">
+            <button class="logout-btn"><a href="/login">Logout</a></button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="parent">
+      <div class="div1">
+        <div class="side-nav">
+          <div class="options options-title">
+            <p class="heading3">Vault</p>
+          </div>
+          <div class="options options-item">
+            <a href="#" class="list-group-active">Saved Credentials   <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>
+            <a href="#" class="list-group-item">Files   <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>
+          </div>
+        </div> 
+      </div>
+      <div class="div2">
+        <div class="title-main">ENTER DETAILS</div>
+        <div class="acc-form">
+          <form>
+              <label for="name">Name:</label><br>
+              <input type="text" id="name" class="input-box" required /><br />
+              <label for="file-upload" class="custom-file-upload">
+                Choose File
+              </label>
+              <input id="file-upload" type="file">
+              <div class="file-name" id="file-name">No file chosen</div>
+            </div>
+            <div class="credentials-save">
+              <button class="btn btn-primary">Save</button><button class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+        </div>
+      </div>
+      </div>
+    <footer>
+      <div class="footer">
+        <p class="heading4">&#169 2023 Doculocker Inc</p>
+        <p class="heading4">ver 2023.12.0</p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+  const fileInput = document.getElementById('file-upload');
+  const fileNameDisplay = document.getElementById('file-name');
+  const uploadForm = document.getElementById('file-upload-form');
+  const saveButton = document.querySelector('.btn.btn-primary');
+
+  fileInput.addEventListener('change', function() {
+    fileNameDisplay.textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+  });
+
+  saveButton.addEventListener('click', function() {
+    const formData = new FormData();
+    const fileField = document.querySelector('input[type="file"]');
+
+    formData.append('file', fileField.files[0]);
+
+    fetch('/upload', { // The URL should point to your Express route
+      method: 'POST', 
+      body: formData
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log('Success:', result);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
+});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Rubik:ital,wght@0,400;0,700;1,500&display=swap");
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
+/* navbar section */
+.navbar-whole {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1c7ed6;
+  width: 100%;
+  margin: 0px;
+}
+
+.navbar-collapse {
+  margin-left: 350px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.list li a {
+  color: #ffffff;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+.logout-btn {
+  background-color: #e03131;
+  color: #ffffff;
+  text-align: center;
+  width: 75px;
+  height: 35px;
+  border-radius: 7px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 200px;
+}
+
+/* footer-section */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ced4da;
+  margin-top: 40px;
+  margin-left: 260px;
+  margin-right: 260px;
+  padding: 40px 0 40px 0;
+  width: 980px;
+  height: 100px;
+}
