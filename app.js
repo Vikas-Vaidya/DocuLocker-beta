@@ -17,6 +17,7 @@ const upload = multer({ storage: storage });
 const app = express();
 
 app.use(express.static("public"));
+app.use(express.static("uploads"))
 app.use(express.json());
 app.use(cookieParser());
 
@@ -82,6 +83,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
   file = fs.readFileSync("users.json");
   users = JSON.parse(file);
   users[user].files.push(req.file.filename);
+  fs.writeFileSync("users.json", JSON.stringify(users));
   res.send({ message: "File uploaded successfully." });
 });
 
@@ -91,6 +93,13 @@ app.get("/list", (req, res) => {
   users = JSON.parse(file);
   res.json(users[user].creds);
 });
+
+app.get("/pass", (req,res)=>{
+  user = req.cookies.email;
+  file = fs.readFileSync("users.json");
+  users = JSON.parse(file);
+  res.json({files: users[user].files});
+})
 
 app.get("/gen", (req, res) => {
   res.sendFile(path.join(__dirname, "gen.html"));

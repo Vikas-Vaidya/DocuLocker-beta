@@ -41,7 +41,6 @@
             <p class="heading3">Vault</p>
           </div>
           <div class="options options-item">
-            <a href="#" class="list-group-active">Saved Credentials   <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>
             <a href="#" class="list-group-item">Files   <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>
           </div>
         </div> 
@@ -73,6 +72,46 @@
     </footer>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+
+        async function displayCredentials() {
+        // Fetch the list of saved credentials from the server
+        const url = '/pass';
+
+        try {
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+          }
+
+          files = await response.json();
+          files = files.files
+
+          // Display the credentials in the dropdown section
+          const dropdownSection = document.querySelector('.options-item');
+          dropdownSection.innerHTML = '<a href="#" class="list-group-item">Files   <object data="image-files/down-arrow.svg" height="30px" width="40px"></object></a>';
+
+          files.forEach((file) => {
+            const credentialLink = document.createElement('a');
+            credentialLink.href = '/'+file;
+            credentialLink.id = file;
+            credentialLink.classList.add('list-group-item');
+            credentialLink.textContent = file; // Assuming the credential object has a 'name' propert
+            credentialLink.download = file
+
+            dropdownSection.appendChild(credentialLink);
+          });
+        } catch (error) {
+          console.error('Could not fetch credentials list:', error);
+          // Handle the error appropriately (e.g., show an error message to the user)
+        }
+      }
+
   const fileInput = document.getElementById('file-upload');
   const fileNameDisplay = document.getElementById('file-name');
   const uploadForm = document.getElementById('file-upload-form');
@@ -82,13 +121,13 @@
     fileNameDisplay.textContent = this.files[0] ? this.files[0].name : 'No file chosen';
   });
 
-  saveButton.addEventListener('click', function() {
+  saveButton.addEventListener('click', async function() {
     const formData = new FormData();
     const fileField = document.querySelector('input[type="file"]');
 
     formData.append('file', fileField.files[0]);
 
-    fetch('/upload', { // The URL should point to your Express route
+    await fetch('/upload', { // The URL should point to your Express route
       method: 'POST', 
       body: formData
     })
@@ -99,7 +138,10 @@
     .catch(error => {
       console.error('Error:', error);
     });
+    displayCredentials();
   });
+
+  displayCredentials();
 });
     </script>
   </body>

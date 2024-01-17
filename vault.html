@@ -79,6 +79,15 @@
       </div>
     </footer>
     <script>
+      let credentialsList;
+
+      function togglePass(x){
+        if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+      }
       // This function will be called when the save button is clicked
       async function saveCredentials(event) {
           event.preventDefault(); // Prevent the form from submitting the traditional way
@@ -146,7 +155,7 @@
             throw new Error(`HTTP error: ${response.status}`);
           }
 
-          const credentialsList = await response.json();
+          credentialsList = await response.json();
 
           // Display the credentials in the dropdown section
           const dropdownSection = document.querySelector('.options-item');
@@ -155,8 +164,14 @@
           credentialsList.forEach((credential) => {
             const credentialLink = document.createElement('a');
             credentialLink.href = '#';
+            credentialLink.id = credential.name;
             credentialLink.classList.add('list-group-item');
             credentialLink.textContent = credential.name; // Assuming the credential object has a 'name' property
+
+            credentialLink.addEventListener('click', function (event) {
+            event.preventDefault();
+            loadCredentialDetails(credential.name); // Assuming the credential object has an 'id' property
+        });
 
             dropdownSection.appendChild(credentialLink);
           });
@@ -166,11 +181,33 @@
         }
       }
 
+      function loadCredentialDetails(credentialId) {
+        // URL to fetch a single credential
+        // The actual URL may include a credential identifier (e.g., "/get/:id")
+        let credentialDetails;
+        credentialsList.forEach((credential)=>{
+          if(credential.name == credentialId){
+            credentialDetails = credential;
+          }
+        })
+            // Fill the form with the details of the credential
+            document.getElementById('name').value = credentialDetails.name;
+            document.getElementById('folder').value = credentialDetails.folder;
+            document.getElementById('username').value = credentialDetails.username;
+            document.getElementById('password').value = credentialDetails.password;
+            document.getElementById('notes').value = credentialDetails.notes;
+
+    }
+
       // Add event listeners once the DOM is fully loaded
       document.addEventListener('DOMContentLoaded', function() {
           document.querySelector('.btn-primary').addEventListener('click', saveCredentials);
           displayCredentials();
       });
+
+      document.getElementById('password').addEventListener('click',(e)=>{
+        togglePass(e.target)
+      })
   </script>
   </body>
 </html>
